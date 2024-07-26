@@ -1,29 +1,34 @@
-import pandas as pd
+def calculate_grade(percentage):
+    # 퍼센트에 따른 등급 계산
+    if percentage <= 4:
+        return 1
+    elif percentage <= 11:
+        return 2
+    elif percentage <= 23:
+        return 3
+    elif percentage <= 40:
+        return 4
+    elif percentage <= 60:
+        return 5
+    elif percentage <= 77:
+        return 6
+    elif percentage <= 89:
+        return 7
+    elif percentage <= 96:
+        return 8
+    else:
+        return 9
 
-def count_hot_days(csv_path):
-    # CSV 파일 읽기
-    df = pd.read_csv(csv_path)
-
-    # 날짜 열을 datetime 형식으로 변환
-    df['date'] = pd.to_datetime(df['date'])
-
-    # 년도 열 추가
-    df['year'] = df['date'].dt.year
-
-    # 30도 이상인 날 필터링
-    hot_days = df[df['temperature'] >= 30]
-
-    # 각 년도별로 30도 이상인 날짜 수 세기
-    hot_days_count = hot_days.groupby('year').size()
-
-    return hot_days_count
-
-def main(csv_path):
-    hot_days_count = count_hot_days(csv_path)
-    print("년도별 30도 이상인 날짜 수:")
-    print(hot_days_count)
+def main():
+    try:
+        percentage = float(input("퍼센트를 입력하세요 (0에서 100 사이): "))
+        if percentage < 0 or percentage > 100:
+            print("올바른 퍼센트를 입력하세요. (0에서 100 사이)")
+        else:
+            grade = calculate_grade(percentage)
+            print(f"퍼센트 {percentage}%는 내신 {grade}등급입니다.")
+    except ValueError:
+        print("유효한 숫자를 입력하세요.")
 
 if __name__ == "__main__":
-    # 예시 CSV 파일 경로
-    csv_path = 'daily.temp.csv'
-    main(csv_path)
+    main()
