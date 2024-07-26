@@ -1,34 +1,28 @@
-def calculate_grade(percentage):
-    # 퍼센트에 따른 등급 계산
-    if percentage <= 4:
-        return 1
-    elif percentage <= 11:
-        return 2
-    elif percentage <= 23:
-        return 3
-    elif percentage <= 40:
-        return 4
-    elif percentage <= 60:
-        return 5
-    elif percentage <= 77:
-        return 6
-    elif percentage <= 89:
-        return 7
-    elif percentage <= 96:
-        return 8
-    else:
-        return 9
+import pandas as pd
+
+def find_recipes_by_ingredient(csv_path, ingredient_name):
+    # CSV 파일 읽기
+    df = pd.read_csv(csv_path)
+
+    # 입력한 재료가 포함된 레시피 필터링
+    filtered_recipes = df[df['ingredients'].apply(lambda x: ingredient_name in x.split(','))]
+
+    # 레시피 목록 추출
+    recipes = filtered_recipes['recipe'].tolist()
+
+    return recipes
 
 def main():
-    try:
-        percentage = float(input("퍼센트를 입력하세요 (0에서 100 사이): "))
-        if percentage < 0 or percentage > 100:
-            print("올바른 퍼센트를 입력하세요. (0에서 100 사이)")
-        else:
-            grade = calculate_grade(percentage)
-            print(f"퍼센트 {percentage}%는 내신 {grade}등급입니다.")
-    except ValueError:
-        print("유효한 숫자를 입력하세요.")
+    csv_path = 'recipes.csv'
+    ingredient_name = input("재료 이름을 입력하세요: ")
+    recipes = find_recipes_by_ingredient(csv_path, ingredient_name)
+
+    if len(recipes) > 0:
+        print(f"'{ingredient_name}' 재료로 만들 수 있는 레시피 목록:")
+        for recipe in recipes:
+            print(recipe)
+    else:
+        print(f"'{ingredient_name}' 재료로 만들 수 있는 레시피를 찾을 수 없습니다.")
 
 if __name__ == "__main__":
     main()
